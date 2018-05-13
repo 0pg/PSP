@@ -1,0 +1,127 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<title>PSP 설문조사</title>
+<style>
+    body {
+      background-color : white;
+      }
+    h1 a {
+    color: white;
+    font-size: 70px;
+    font-family : 'Malgun Gothic';
+    text-decoration: none;
+    } 
+   .page-header {
+    background-color: #203864;
+    text-align: center;
+    font-family : 맑은고딕;
+    padding: 0.1px 1px 0.1px 1px; 
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+    <h1><strong></strong><a href="test.html">PSP</a></h1>
+</div>
+<br />
+<form method="post" name="form1" >
+
+<style>
+ .btn {
+	margin: 0 auto; display: button; 
+}
+</style>
+<script type="text/javascript">
+  var idx;
+  var obj_table;
+  function my_init() {
+    idx=0;
+    obj_table=document.all.mytable.cloneNode(true);
+    obj_iframe=document.all.ifrm.cloneNode(true);
+  }
+  function add_table() {
+        idx++;
+        eval("document.all.mytable"+(idx>1?idx-1:"")).insertAdjacentHTML("afterEnd",obj_table.outerHTML.replace("mytable","mytable"+idx));
+     		}
+ function insert_action(){ 
+ 		var i=0, j=0;
+ 		var main = new Array();
+  		var jsonText = document.getElementById("jsonText");
+		var mn = document.getElementById('sn1');
+ 		var iframe = document.getElementsByName('ifrm');
+ 		var num = 1;
+ 		for(i=0;i<document.getElementsByName('ifrm').length;i++){
+ 			 sub = new Object();
+ 			sub['key0'] = num; num++;
+ 			if(document.getElementsByName('ifrm')[i].contentWindow.document.getElementById('selectBox').value == "chkb")
+ 			{
+ 				for(j=1;j<document.getElementsByName('ifrm')[i].contentWindow.document.getElementsByName('cn').length+3;j++)
+ 				{
+ 					if(j<3){
+ 			 			sub['key'+j] = document.getElementsByName('ifrm')[i].contentWindow.document.getElementsByName('qn')[j-1].value;
+ 			 		}
+ 		  	 		else if(j==3){
+ 		  	 				sub['key3'] = document.getElementsByName('ifrm')[i].contentWindow.document.getElementById('selectBox').value;
+ 		  	 		}
+ 					else {
+ 					sub['key'+j] = document.getElementsByName('ifrm')[i].contentWindow.document.getElementsByName('ct')[j-3].value; 
+ 					}
+ 				}
+ 			}
+ 			else if(document.getElementsByName('ifrm')[i].contentWindow.document.getElementById('selectBox').value == "radb")
+ 			{
+  				for(j=1;j<document.getElementsByName('ifrm')[i].contentWindow.document.getElementsByName('rn').length+3;j++)
+ 				{
+ 					if(j<3){
+ 			 			sub['key'+j] = document.getElementsByName('ifrm')[i].contentWindow.document.getElementsByName('qn')[j-1].value;
+ 			 		}
+ 		  	 		else if(j==3){
+ 		  	 				sub['key3'] = document.getElementsByName('ifrm')[i].contentWindow.document.getElementById('selectBox').value;
+ 					}
+ 					else {
+ 					sub['key'+j] = document.getElementsByName('ifrm')[i].contentWindow.document.getElementsByName('rt')[j-3].value; 
+ 					}
+ 				}	
+ 			}
+ 			main[i] = sub;
+ 		}
+           jsonText.value = JSON.stringify(main);
+  			document.form1.target = 'ifm';
+  	 		document.form1.action = 'db2.php';
+  	 		alert("설문이 생성되었습니다.");
+			history.go(0);
+  			document.getElementById("form1").submit();
+
+
+
+ }
+
+</script>
+</head>
+<input type="text" id = 'sn1' name='sn' placeholder="설문 주제" style="width:100%">
+<br><br>
+<body onload=my_init()>
+  <table border="1" style="margin:0 auto" width="100%" height="400" cellspacing="0" id=mytable>
+<tr>
+        <td><iframe name="ifrm" src="index.html" width="100%" height="100%" style="margin:0 auto" frameborder="0" scrolling="yes" marginwidth="0" marginheight="0"></iframe></td>
+    </tr>
+  </table>
+  <center><Input type=button style="margin:0 auto" value="질문 추가" onclick="add_table()"></Input></center>
+
+<br />
+<br />
+<br />
+<input type="hidden" id = "jsonObject" name = "jsonObject" >
+<input type="hidden" id = "jsonText" name = "jsonText" >
+<p><input type="submit" onclick='insert_action()' value="제출" ></p>
+<iframe name="ifm" width="0" height="0" frameborder="0"></iframe> 
+</form>
+</body>
+</html>
+
+
+
